@@ -39,14 +39,38 @@ launcher(exeName) {
         Run(exeName)
     }
 }
+
+launcherUsingStart(exeName) {
+    ; Open Start Menu
+    Send("!{Space}")  ; This sends Win key press
+    ; Wait for Start Menu to appear
+    ; Small delay to ensure search box is focused
+    Sleep(100)
+    ; Type the app name slowly
+    for char in StrSplit(exeName) {
+        Send(char)
+        Sleep(50)
+    }
+    Sleep(100)
+    ; Press Enter
+    Send("{Enter}")
+}
 ; Change with path wanted
 <!g::launcher('C:\Program Files\Google\Chrome\Application\chrome.exe')
-<!d::launcher('C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2025.1.3\bin\idea64.exe')
 <!s::launcher("C:\Program Files\WSL\wsl.exe")
-<!a::launcher("https://chat.openai.com/")
+<!a::{
+    launcher("C:\Program Files\Google\Chrome\Application\chrome.exe")
+    Sleep(100) ; Wait for Chrome to open the tab
+    if WinExist("ahk_exe chrome.exe") {
+        WinActivate()
+        Sleep(100)
+        Send("^1") ; Ctrl+1 = First tab
+    }
+}
+<!d::launcherUsingStart('intellij idea')
+<!e::launcherUsingStart('outlook')
+<!c::launcherUsingStart('microsoft teams')
 /*
-<!e::launcher('Path to email (outlook)')
-<!c::launcher('Path to chat (teams)')
 <!f::launcher('Path to any other stuff')
 */
 
