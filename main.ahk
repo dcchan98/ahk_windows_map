@@ -2,6 +2,8 @@
 /*
 Caps lock to escape and ctrl
 */
+SetCapsLockState 'AlwaysOff'
+
 Escape::CapsLock
 Capslock::RCtrl
 
@@ -67,12 +69,66 @@ launcherUsingStart(exeName) {
         Send("^1") ; Ctrl+1 = First tab
     }
 }
-<!d::launcherUsingStart('intellij idea')
+<!d::launcher("C:\Users\dccha\AppData\Local\Programs\Microsoft VS Code\Code.exe")
 <!e::launcherUsingStart('outlook')
 <!c::launcherUsingStart('microsoft teams')
 /*
 <!f::launcher('Path to any other stuff')
 */
+
+;; Stacking Hotkeys
+*~Esc Up::
+*~F13 Up::
+*~F14 Up::
+*~F15 Up::
+*~F16 Up::
+*~F17 Up::
+*~F18 Up::
+*~F19 Up::
+*~F20 Up::
+*~F21 Up::
+*~F22 Up::
+*~F23 Up::
+*~F24 Up::
+*~AppsKey Up::
+*~Pause Up::
+*~Home Up::
+*~Insert Up::
+*~ScrollLock Up::
+*~LControl Up::
+*~RControl Up::
+*~Ctrl Up::
+*~LCtrl Up::
+*~RCtrl Up::
+*~Alt Up::
+*~LAlt Up::
+*~RAlt Up::
+*~Shift Up::
+*~RShift Up::
+*~LShift Up::
+*~RWin Up:: 
+*~LWin Up:: 
+{
+    ;; Check 350ms after release.
+
+    SetTimer(Check, -350)
+    Return
+    
+    Check() {
+
+        ;; Get Key Name From Thishotkey Variable
+        RegExMatch(ThisHotkey, '\w+', &match)
+
+        ;; If held but not physically, send up keystroke.
+
+        If GetKeyState(match[]) && !GetKeyState(match[], 'P')
+            Send('{' match[] ' Up}')
+
+        ;; Show a message box popup.
+              ;;MsgBox('Sent {' match[] ' Up} event')
+
+    }
+}
 
 /*
 Powertoys section
